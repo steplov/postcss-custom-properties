@@ -1,5 +1,11 @@
 # Changes to PostCSS Custom Properties
 
+### 9.1.2 (June 19, 2020)
+
+- Fixed: Preserve spaces in multi-part values ([#218](https://github.com/postcss/postcss-custom-properties/issues/218))
+- Fixed: Preserve commas in multi-part values ([#221](https://github.com/postcss/postcss-custom-properties/issues/221))
+
+
 ### 9.1.1 (February 20, 2020)
 
 - Fixed: Preserve spaces in multi-part values ([#203](https://github.com/postcss/postcss-custom-properties/pull/203))
