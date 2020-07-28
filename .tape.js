@@ -284,5 +284,26 @@ module.exports = {
 		options: {
 			importFrom: {}
 		}
+	},
+	'nested-fallback': {
+		message: 'supports nested fallback (preserve: false)',
+		options: {
+			preserve: false
+		},
+		expect: 'nested-fallback.expect.css',
+		result: 'nested-fallback.result.css'
+	},
+	'nested-fallback:preserve': {
+		message: 'supports nested fallback (preserve: true)',
+		options: {
+			preserve: true,
+			importFrom: {
+				customProperties: {
+					'--spacing-xs': '8px'
+				}
+			}
+		},
+		expect: 'nested-fallback-preserve.expect.css',
+		result: 'nested-fallback-preserve.result.css'
 	}
 };

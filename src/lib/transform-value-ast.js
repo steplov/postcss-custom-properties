@@ -1,4 +1,4 @@
-export default function transformValueAST(root, customProperties) {
+export default function transformValueAST(root, customProperties, opts) {
 	if (root.nodes && root.nodes.length) {
 		root.nodes.slice().forEach(child => {
 			if (isVarFunction(child)) {
@@ -24,19 +24,24 @@ export default function transformValueAST(root, customProperties) {
 						node.raws = raws[index];
 					});
 
-					retransformValueAST({ nodes }, customProperties, name);
+					retransformValueAST({ nodes }, customProperties, name, opts);
 				} else if (fallbacks.length) {
 					// conditionally replace a custom property with a fallback
 					const index = root.nodes.indexOf(child);
 
 					if (index !== -1) {
-						root.nodes.splice(index, 1, ...asClonedArrayWithBeforeSpacing(fallbacks, child.raws.before));
+						if (!opts.preserve && isVarFunction(fallbacks[0])) {
+							const nodes = asClonedArrayWithBeforeSpacing([fallbacks[0]], child.raws.before);
+							child.replaceWith(...nodes);
+						} else {
+							root.nodes.splice(index, 1, ...asClonedArrayWithBeforeSpacing(fallbacks, child.raws.before));
+						}
 					}
 
-					transformValueAST(root, customProperties);
+					transformValueAST(root, customProperties, opts);
 				}
 			} else {
-				transformValueAST(child, customProperties);
+				transformValueAST(child, customProperties, opts);
 			}
 		});
 	}
@@ -45,12 +50,12 @@ export default function transformValueAST(root, customProperties) {
 }
 
 // retransform the current ast without a custom property (to prevent recursion)
-function retransformValueAST(root, customProperties, withoutProperty) {
+function retransformValueAST(root, customProperties, withoutProperty, opts) {
 	const nextCustomProperties = Object.assign({}, customProperties);
 
 	delete nextCustomProperties[withoutProperty];
 
-	return transformValueAST(root, nextCustomProperties);
+	return transformValueAST(root, nextCustomProperties, opts);
 }
 
 // match var() functions
