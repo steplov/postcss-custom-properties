@@ -1,0 +1,16 @@
+:root {
+	--color: #fff;
+}
+
+.test {
+	backgroud-color: #fff;
+	backgroud-color: var(--empty, #fff);
+	color: #fff;
+	color: var(--color);
+	color: var(--empty2, var(--color));
+}
+.test2 {
+	padding: 8px;
+	padding: var(--spacing-xs, 8px);
+	padding: var(--KButtonPaddingY, var(--spacing-xs, 8px));
+}
